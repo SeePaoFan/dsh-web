@@ -168,20 +168,13 @@ export function BranchChip(props: BranchChipProps) {
   // appended chip lands at the far right of the selector row. Keep the portaled
   // chip immediately before that group: directly after the agent-preset seat.
   useLayoutEffect(() => {
-    if (!heroSeat || heroRow === null) return undefined
-    const place = (): void => {
-      const anchor = chipRef.current
-      if (anchor === null || anchor.parentElement !== heroRow) return
-      const trailing = findHeroTrailingGroup(heroRow)
-      if (trailing === null || anchor.nextElementSibling === trailing) return
-      heroRow.insertBefore(anchor, trailing)
-    }
-    place()
-    if (typeof MutationObserver === 'undefined') return undefined
-    const observer = new MutationObserver(place)
-    observer.observe(heroRow, { childList: true })
-    return () => { observer.disconnect() }
-  }, [heroSeat, heroRow, repo])
+    if (!heroSeat || heroRow === null) return
+    const anchor = chipRef.current
+    if (anchor === null || anchor.parentElement !== heroRow) return
+    const trailing = findHeroTrailingGroup(heroRow)
+    if (trailing === null || anchor.nextElementSibling === trailing) return
+    heroRow.insertBefore(anchor, trailing)
+  })
 
   const refetch = useCallback(() => {
     let live = true
